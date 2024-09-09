@@ -1,0 +1,19 @@
+<!-- templates/emails/job_application_email.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Job Application</title>
+</head>
+<body>
+    <p>Dear Hiring Team,</p>
+    <p>{{ full_name }} has applied for a job at Pinesphere.</p>
+    <p>Contact Details:</p>
+    <ul>
+        <li>Email: {{ email }}</li>
+        <li>Phone: {{ phone }}</li>
+    </ul>
+    <p>Best Regards,<br>Job Application System</p>
+</body>
+</html>
