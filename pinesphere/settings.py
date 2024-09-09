@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-)*uq%@33loaz18_^ip-_+hm6a4s_mv+zqkvb#ckcp9_cl&kie5
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['pinesphere.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['pinesphere.onrender.com', 'localhost','127.0.0.1']
 
 
 # Application definition
