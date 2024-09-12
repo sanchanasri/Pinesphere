@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consent Example</title>
+    <style>
+        /* Fullscreen overlay background for the popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        /* Popup box styling */
+        .cookie-consent {
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Button styling */
+        .cookie-consent button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cookie-consent button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Popup message styling */
+        .cookie-consent p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="cookie-consent" id="cookie-consent">
+            <p>We use cookies to improve your experience. By clicking "Accept", you consent to our use of cookies. </p>
+            <button onclick="giveConsent()">Accept</button>
+            <button onclick="rejectConsent()">Reject</button>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function loadGoogleAnalytics() {
+            var gaScript = document.createElement('script');
+            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-ZBQEXRJXCS";
+            document.head.appendChild(gaScript);
+
+            gaScript.onload = function() {
+                window.dataLayer = window.dataLayer || [];
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+
+                gtag('config', 'G-ZBQEXRJXCS', {
+                    'page_title': 'Index page',
+                });
+            };
+            console.log("loaded ga")
+        }
+
+        function loadMicrosoftClarity() {
+            var clarityScript = document.createElement('script');
+            clarityScript.type = 'text/javascript';
+            clarityScript.async = true;
+            clarityScript.src = "https://www.clarity.ms/tag/o0gatziyu4";
+            document.head.appendChild(clarityScript);
+            console.log("loaded clarity")
+        }
+
+        function checkConsent() {
+            var consent = getCookie("user_consent");
+            if (!consent) {
+                document.getElementById('popup-overlay').style.display = 'flex'; 
+            } else {
+                loadGoogleAnalytics();
+                loadMicrosoftClarity();
+            }
+        }
+
+        function giveConsent() {
+            document.getElementById('popup-overlay').style.display = 'none';
+            setCookie("user_consent", "true", 365);
+            loadGoogleAnalytics();
+            loadMicrosoftClarity();
+            console.log("consent given")
+        }
+        function rejectConsent() {
+            console.log("Cookies Rejected");
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
+        checkConsent();
+    </script>
+</body>
+</html>

@@ -10,7 +10,6 @@ from django.template.loader import render_to_string
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 
-
 def home(request):
     return render (request,'index.html')
 
@@ -104,6 +103,7 @@ def logout_view(request):
     logout(request)
     return redirect('/log_in')
 
-
+def cookies_consent(request):
+    return render(request,"index2.html")
 
 

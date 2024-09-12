@@ -16,5 +16,6 @@ urlpatterns = [
     path('pine_news/', views.pine_news, name="pine_news"),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path("log_in/", views.login_view, name="login"),
-    path("log_out", views.logout_view, name="logout")
+    path("log_out", views.logout_view, name="logout"),
+    path("cookies_consent", views.cookies_consent, name="cookies_consent"),
 ]
