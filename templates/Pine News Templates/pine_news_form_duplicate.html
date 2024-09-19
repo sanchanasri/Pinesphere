@@ -442,55 +442,89 @@
                                                     </div>
                                                     <div class="card-block">
 
-                                                        <form method="POST" action="{% url 'create_pine_news' %}" enctype="multipart/form-data">
-                                                            {% csrf_token %}
-                                                            
-                                                            <div class="form-group">
-                                                                <label for="id_title">Title</label>
-                                                                {{ form.title }}
+                                                       
+                                                        <form class="row g-3 needs-validation" method="POST" action="{% url 'create_pine_news' %}" enctype="multipart/form-data" novalidate>
+                                                            {%csrf_token%}
+                                                            <div class="form-group row mx-1">
+                                                              <label for="title" class="form-label">Title</label>
+                                                              <input type="text" class="form-control" name="title" id="title" required>
+                                                              <div class="invalid-feedback">
+                                                                This field is required
+                                                              </div>
                                                             </div>
-                                                            
-                                                            <div class="form-group">
-                                                                <label for="id_content">Content</label>
-                                                                {{ form.content }}
+                                                            <div class="form-group row mx-1">
+                                                              <label for="quote" class="form-label">Quoted Text</label>
+                                                              <input type="text" class="form-control" id="quote" name="quote" required>
+                                                              <div class="invalid-feedback">
+                                                                This field is required
+                                                              </div>
                                                             </div>
-                                                        
-                                                            <div class="form-group">
-                                                                <label for="id_categories">Categories</label>
-                                                                {{ form.categories }}
-                                                                {% if form.categories.errors %}
-                                                                    <div class="alert alert-danger">
-                                                                        {{ form.categories.errors.as_text }} 
-                                                                    </div>
-                                                                {% endif %}
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-2 col-form-label"for="categories" class="form-label">Tags</label>
+                                                              
+                                                                <select name="tags" class="form-multi-select" id="ms1" multiple data-coreui-search="true" required>
+                                                                    {% for tag in tags %}
+                                                                        <option value="{{ tag.id }}">{{ tag.tag_name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                                <div class="invalid-feedback">
+                                                                  Please choose a tag.
+                                                                </div>
+                                                              
                                                             </div>
-                                                        
-                                                            <div class="form-group">
-                                                                <label for="id_tags">Tags</label>
-                                                                {{ form.tags }}
-                                                                {% if form.tags.errors %}
-                                                                    <div class="alert alert-danger">
-                                                                        {{ form.tags.errors.as_text }} 
-                                                                    </div>
-                                                                {% endif %}
+                                                            <div class="form-group row">
+                                                              <label class="col-sm-2 col-form-label"for="categories" class="form-label">Categories</label>
+                                                              <select name="categories" class="form-multi-select" id="ms2" multiple data-coreui-search="true" required>
+                                                                {% for category in categories %}
+                                                                    <option value="{{ category.id }}">{{ category.category_name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                              <div class="invalid-feedback">
+                                                                Please choose a category
+                                                              </div>
                                                             </div>
-                                                        
-                                                            <div class="form-group">
-                                                                <label for="id_quote">Quote</label>
-                                                                {{ form.quote }}
-                                                            </div>
+                                                            <div class="form-group row mx-1">
+                                                                <label for="file" class="form-label">Upload Image</label>
+                                                                <input type="file" multiple name="images" class="form-control" required>
+                                                                <div class="invalid-feedback">
+                                                                  Upload atleast 1 image
+                                                                </div>
+                                                              </div>
+                                                            <div class="form-group row mx-1">
+                                                              <label for="Content" class="form-label">Content</label>
+                                                              <div id="editor" name="content" class="form-control ckeditor-container" required>{{ form.content|default:'' }}</div>
 
-                                                            <div class="form-group">
-                                                                <label for="id_images">Images</label>
-                                                                <input type="file" name="images" id="id_images" multiple>
+                                                              <div class="invalid-feedback">
+                                                                This field is required.
+                                                              </div>
                                                             </div>
-                                                        
-                                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                                        </form>
-                                                        
-                                                        <script>
+                                                            
+                                                            
+                                                            <div class="col-12">
+                                                              <button class="btn btn-primary" type="submit">Submit form</button>
+                                                            </div>
+                                                          </form>
+
+                                                          <script>
+                                                            (function () {
+                                                                'use strict'
+                                                                var forms = document.querySelectorAll('.needs-validation')
+                                                                Array.prototype.slice.call(forms)
+                                                                .forEach(function (form) {
+                                                                    form.addEventListener('submit', function (event) {
+                                                                    if (!form.checkValidity()) {
+                                                                        event.preventDefault()
+                                                                        event.stopPropagation()
+                                                                    }
+                                                            
+                                                                    form.classList.add('was-validated')
+                                                                    }, false)
+                                                                })
+                                                            })()
+                                                          </script>
+                                                       <script>
                                                             document.getElementById('id_content').removeAttribute('required');
-                                                        </script>
+                                                        </script> 
                                                        </div>
                                                     </div>
                                                 </div>

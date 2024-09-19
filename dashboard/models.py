@@ -183,22 +183,17 @@ class PineNewsTags(models.Model):
           
     
 class PineNews(models.Model):
-    title= models.CharField(max_length=700)
+    title = models.CharField(max_length=700)
     content = CKEditor5Field('content', config_name='extends')
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE,)
     categories= models.ManyToManyField(PineNewsCategories, related_name="news_items")
     tags= models.ManyToManyField(PineNewsTags, related_name="news_items")
     quote= models.CharField(max_length=500)
     
     def get_absolute_url(self):
         return reverse('pine_news_detail', args=[self.id])  
-    
-    def save(self, *args, **kwargs):
-        if not self.title  or not self.created_by:
-            raise ValueError("Title, content, and created_by are required fields.")
-        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.title

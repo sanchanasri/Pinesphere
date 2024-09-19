@@ -80,7 +80,7 @@ def post_pine_news(request):
         'categories': categories,
         'form':form,
     }
-    return render(request, 'Pine News Templates/pine_news_form.html', context)
+    return render(request, 'Pine News Templates/pine_news_form_duplicate.html', context)
 
 
 def update_pine_news(request, pk):
@@ -120,7 +120,6 @@ def delete_pine_news(request, id):
     return HttpResponseRedirect(reverse('pine_news'))
 
 
-
 def pine_news_detail(request, id):
     pine_news= get_object_or_404(PineNews, id=id)
     return render(request, 'Pine News Templates/pine_news_detail.html', {'pine_news':pine_news})
@@ -157,4 +156,5 @@ def logout_view(request):
 def cookies_consent(request):
     return render(request,"index2.html")
 
-
+def notifications(request):
+    return render(request, 'notification.html')

@@ -450,25 +450,15 @@
                                                         <h5>Pine News</h5>
                                                         <span>Latest updates and news articles</span>
                                                         <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                            </ul>
+                                                            <a href="{% url 'create_pine_news' %}" class="btn btn-primary waves-effect waves-light">Create Pine News</a>
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="container">
                                                             {% for item in news %}
-                                                                <div class="card" style="display: flex; align-items: center; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
-                                                                   
-                                                                    
-                                                                    <div class="card-body" style="flex-grow: 1;">
+                                                                <div class="card" style="display: flex; align-items: center; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; padding: 15px;"><div class="card-body" style="flex-grow: 1;">
                                                                         <a href="{% url 'pine_news_detail' item.id%}"><h2 style="margin-top: 0;">{{ item.title }}</h2></a>
-
-                                                                    </div>
+                                                                </div>
                                                                 </div>
                                                             {% empty %}
                                                                 <p>No news available.</p>

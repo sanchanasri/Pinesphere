@@ -29,4 +29,5 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},name='django.contrib.sitemaps.views.sitemap'),
     path('pine-news/update/<int:pk>/', views.update_pine_news, name='update_pine_news'),
     path('pine-news/delete/<int:id>/', views.delete_pine_news, name='delete_pine_news'),
+    path('notifications/', views.notifications, name="notifications")
 ]
