@@ -125,6 +125,11 @@
                             </div>
                             <div class="auth-box card">
                                 <div class="card-block">
+                                    {% if error %}
+                                    <div class="alert alert-danger text-center">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
                                     <div class="row m-b-20">
                                         <div class="col-md-12">
                                             <h3 class="text-center">Sign In</h3>

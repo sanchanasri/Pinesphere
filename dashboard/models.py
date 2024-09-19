@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.postgres.fields import ArrayField
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -186,12 +186,14 @@ class PineNews(models.Model):
     title= models.CharField(max_length=700)
     content = CKEditor5Field('content', config_name='extends')
     created_at= models.DateTimeField(auto_now_add=True)
-    updated_at= models.DateTimeField(auto_now_add=True)
+    updated_at= models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     categories= models.ManyToManyField(PineNewsCategories, related_name="news_items")
     tags= models.ManyToManyField(PineNewsTags, related_name="news_items")
     quote= models.CharField(max_length=500)
     
+    def get_absolute_url(self):
+        return reverse('pine_news_detail', args=[self.id])  
     
     def save(self, *args, **kwargs):
         if not self.title  or not self.created_by:
@@ -203,6 +205,7 @@ class PineNews(models.Model):
     
     class Meta:
         verbose_name_plural = "Pine News"
+        
 class PineNewsImage(models.Model):
     pine_news = models.ForeignKey(PineNews, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='assets/images/pine_news_images/', blank=True, null=True)

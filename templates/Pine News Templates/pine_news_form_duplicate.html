@@ -5,13 +5,6 @@
 
 <head>
     <title>Pinesphere</title>
-    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 10]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -425,7 +418,6 @@
                         </div>
                     </nav>
                     <div class="pcoded-content">
-                        <!-- Page-header start -->
                         <div class="page-header">
                             <div class="page-block">
                                 <div class="row align-items-center">
@@ -438,97 +430,75 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Page-header end -->
                         <div class="pcoded-inner-content">
-                            <!-- Main-body start -->
                             <div class="main-body">
                                 <div class="page-wrapper">
-
-                                    <!-- Page body start -->
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <!-- Basic Form Inputs card start -->
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Add Pine News</h5>
                                                     </div>
                                                     <div class="card-block">
-                                                         <form method="POST" action="{% url 'create_pine_news' %}" enctype="multipart/form-data">
-                                                            {% csrf_token %}
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Title</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="text" name="title" class="form-control" placeholder="Title" Required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Quoted Text</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="text" name="quote" class="form-control" placeholder="quoted text" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Tags</label>
-                                                                <div class="col-sm-10">
-                                                                    <select  name="tags" class="form-multi-select" id="ms1" multiple data-coreui-search="true">
-                                                                        {% for tag in tags %}
-                                                                            <option value="{{ tag.id }}">{{ tag.tag_name }}</option>
-                                                                        {% endfor %}
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Categories</label>
-                                                                <div class="col-sm-10">
-                                                                    <select  name="categories" class="form-multi-select" id="ms1" multiple data-coreui-search="true">
-                                                                        {% for category in categories %}
-                                                                            <option value="{{ category.id }}">{{ category.category_name }}</option>
-                                                                        {% endfor %}
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Upload File</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="file" multiple name="images" class="form-control">
-                                                                </div>
-                                                            </div>
 
+                                                        <form method="POST" action="{% url 'create_pine_news' %}" enctype="multipart/form-data">
+                                                            {% csrf_token %}
                                                             
-                                                            <div class="form-group row">
-                                                                <label class="col-sm-2 col-form-label">Content</label>
-                                                                <div class="col-sm-10">
-                                                                    <div id="editor" name="content" class="form-control ckeditor-container">{{ form.content|default:'' }}</div>
-                                                                </div>
+                                                            <div class="form-group">
+                                                                <label for="id_title">Title</label>
+                                                                {{ form.title }}
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label for="id_content">Content</label>
+                                                                {{ form.content }}
+                                                            </div>
+                                                        
+                                                            <div class="form-group">
+                                                                <label for="id_categories">Categories</label>
+                                                                {{ form.categories }}
+                                                                {% if form.categories.errors %}
+                                                                    <div class="alert alert-danger">
+                                                                        {{ form.categories.errors.as_text }} 
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        
+                                                            <div class="form-group">
+                                                                <label for="id_tags">Tags</label>
+                                                                {{ form.tags }}
+                                                                {% if form.tags.errors %}
+                                                                    <div class="alert alert-danger">
+                                                                        {{ form.tags.errors.as_text }} 
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        
+                                                            <div class="form-group">
+                                                                <label for="id_quote">Quote</label>
+                                                                {{ form.quote }}
                                                             </div>
 
-                                                            <div class="text-center my-4">
-                                                                <button type="submit" class="btn btn-primary waves-effect waves-ligh">
-                                                                     SUBMIT
-                                                                </button>
+                                                            <div class="form-group">
+                                                                <label for="id_images">Images</label>
+                                                                <input type="file" name="images" id="id_images" multiple>
                                                             </div>
-                                                        </form> 
-                                                        {% comment %} <form method="post" enctype="multipart/form-data">
-                                                            {% csrf_token %}
-                                                            {{ form.as_p }}
-                                                            <button type="submit">Submit</button>
-                                                        </form> {% endcomment %}
-
+                                                        
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </form>
+                                                        
                                                         <script>
                                                             document.getElementById('id_content').removeAttribute('required');
                                                         </script>
                                                        </div>
                                                     </div>
                                                 </div>
-                                                <!-- Basic Form Inputs card end -->
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Page body end -->
                                 </div>
                             </div>
-                            <!-- Main-body end -->
                             <div id="styleSelector">
 
                             </div>
@@ -540,62 +510,12 @@
     </div>
 
 
-    <!-- Warning Section Starts -->
-    <!-- Older IE warning message -->
-    <!--[if lt IE 10]>
-<div class="ie-warning">
-    <h1>Warning!!</h1>
-    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers
-        to access this website.</p>
-    <div class="iew-container">
-        <ul class="iew-download">
-            <li>
-                <a href="http://www.google.com/chrome/">
-                    <img src="{% static 'images/browser/chrome.png' %}" alt="Chrome">
-                    <div>Chrome</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.mozilla.org/en-US/firefox/new/">
-                    <img src="{% static 'images/browser/firefox.png' %}" alt="Firefox">
-                    <div>Firefox</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.opera.com">
-                    <img src="{% static 'images/browser/opera.png' %}" alt="Opera">
-                    <div>Opera</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.apple.com/safari/">
-                    <img src="{% static 'images/browser/safari.png' %}" alt="Safari">
-                    <div>Safari</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                    <img src="{% static 'images/browser/ie.png' %}" alt="">
-                    <div>IE (9 & above)</div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <p>Sorry for the inconvenience!</p>
-</div>
-<![endif]-->
-    <!-- Warning Section Ends -->
-    <!-- Required Jquery -->
     <script type="text/javascript" src="{% static 'js/jquery/jquery.min.js ' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery-ui/jquery-ui.min.js ' %}"></script>
     <script type="text/javascript" src="{% static 'js/popper.js/popper.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap/js/bootstrap.min.js ' %}"></script>
-    <!-- waves js -->
     <script src="{% static 'pages/waves/js/waves.min.js' %}"></script>
-    <!-- jquery slimscroll js -->
     <script type="text/javascript" src="{% static 'js/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
-
-    <!-- Custom js -->
     <script src="{% static 'js/pcoded.min.js' %}"></script>
     <script src="{% static 'js/vertical/vertical-layout.min.js' %}"></script>
     <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>

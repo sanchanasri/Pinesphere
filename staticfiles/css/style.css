@@ -14384,3 +14384,12 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
     font-weight: bold; 
     color: darkblue;
 }
+.ckeditor-container a {
+    text-decoration: underline;
+    color: blue; 
+}
+
+.ckeditor-container a:hover {
+    color: darkblue;
+    text-decoration: underline; 
+}
