@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
 
-
 class Visitor(models.Model):
     ip_address = models.GenericIPAddressField()
     user_agent = models.CharField(max_length=255)

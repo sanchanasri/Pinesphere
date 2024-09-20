@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class PineNewsSitemap(Sitemap):
     changefreq = "monthly"
-    priority = 0.6
+    priority = 0.9
 
     def items(self):
         return PineNews.objects.all()
