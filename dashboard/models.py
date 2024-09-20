@@ -193,7 +193,7 @@ class PineNews(models.Model):
     quote= models.CharField(max_length=500)
     
     def get_absolute_url(self):
-        return reverse('pine_news_detail', args=[self.id])  
+        return reverse('pine_news_detail', kwargs={'id': self.id})  
     
     def __str__(self):
         return self.title

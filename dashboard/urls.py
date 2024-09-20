@@ -9,7 +9,7 @@ router.register(r'job_application', views.JobApplicationViewSet, basename='jobap
 
 sitemaps = {
     'pinenews': PineNewsSitemap,
-    'auth': AuthSitemap,
+    # 'auth': AuthSitemap,
 }
 
 
