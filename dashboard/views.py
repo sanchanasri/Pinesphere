@@ -103,7 +103,20 @@ def update_pine_news(request, pk):
         images = request.FILES.getlist('images')
         for image in images:
             PineNewsImage.objects.create(pine_news=pine_news, image=image)
+            
+        removed_images = request.POST.get('removedImages', '')
+        if removed_images:
+            removed_image_ids = removed_images.split(',')
+            for image_id in removed_image_ids:
+                try:
+                    image = PineNewsImage.objects.get(id=image_id, pine_news=pine_news)
+                    image.delete()
+                except PineNewsImage.DoesNotExist:
+                    continue
+                
         return HttpResponseRedirect(reverse('pine_news'))
+    
+        
 
     context = {
         'tags': tags,

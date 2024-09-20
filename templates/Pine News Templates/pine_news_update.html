@@ -496,23 +496,87 @@
                                                                     Please choose a category
                                                                 </div>
                                                             </div>
+
+
                                                             <div class="form-group row mx-1">
                                                                 <label for="file" class="form-label">Upload Image</label>
-                                                                <input type="file" multiple name="images" class="form-control">
+                                                                <input type="file" multiple name="images" class="form-control" id="imageUpload">
                                                                 <div class="invalid-feedback">
                                                                     Upload at least 1 image
                                                                 </div>
+                                                            
                                                                 <div class="mt-2">
                                                                     <h5>Currently Attached Images:</h5>
-                                                                    {% for image in pine_news.images.all %}
-                                                                        <div class="existing-image mb-2">
-                                                                            <img src="{{ image.image.url }}" alt="Image for {{ pine_news.title }}" style="max-width: 200px; max-height: 150px;">
-                                                                        </div>
-                                                                    {% empty %}
-                                                                        <p>No images uploaded yet.</p>
-                                                                    {% endfor %}
+                                                                    <div id="existingImagesContainer" class="row">
+                                                                        {% for image in pine_news.images.all %}
+                                                                            <div class="existing-image col-sm-3 mb-2 position-relative" id="image-{{ image.id }}">
+                                                                                <img src="{{ image.image.url }}" alt="Image for {{ pine_news.title }}" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                                                           
+                                                                                <button class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="removeExistingImage({{ image.id }})">Cancel</button>
+                                                                            </div>
+                                                                        {% empty %}
+                                                                            <p>No images uploaded yet.</p>
+                                                                        {% endfor %}
+                                                                    </div>
                                                                 </div>
+                                                            
+                                                                <!-- Hidden field to track removed images -->
+                                                                <input type="hidden" id="removedImages" name="removedImages" value="">
                                                             </div>
+                                                            
+                                                            <div id="imagePreview" class="row mt-3"></div>
+                                                            
+                                                            <script>
+                                                            document.getElementById('imageUpload').addEventListener('change', function(event) {
+                                                                const previewContainer = document.getElementById('imagePreview');
+                                                                previewContainer.innerHTML = ''; 
+                                                                const files = Array.from(event.target.files); 
+                                                            
+                                                                files.forEach((file, index) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = function(e) {
+                                                                        const imageContainer = document.createElement('div');
+                                                                        imageContainer.classList.add('col-sm-3', 'mb-3', 'position-relative');
+                                                            
+                                                                        const img = document.createElement('img');
+                                                                        img.src = e.target.result;
+                                                                        img.classList.add('img-thumbnail');
+                                                                        img.style.width = '100%';
+                                                                        const cancelButton = document.createElement('button');
+                                                                        cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0', 'end-0');
+                                                                        cancelButton.textContent = 'Cancel';
+                                                            
+                                                                        cancelButton.onclick = function() {
+                                                                            imageContainer.remove(); 
+                                                                            files.splice(index, 1); 
+                                                                            const newFileList = new DataTransfer();
+                                                                            files.forEach(file => {
+                                                                                newFileList.items.add(file);
+                                                                            });
+                                                            
+                                                                            document.getElementById('imageUpload').files = newFileList.files;
+                                                                        };
+                                                            
+                                                                        imageContainer.appendChild(img);
+                                                                        imageContainer.appendChild(cancelButton);
+                                                                        previewContainer.appendChild(imageContainer);
+                                                                    };
+                                                                    reader.readAsDataURL(file); 
+                                                                });
+                                                            });
+                                                            
+                                                            // collecting the image id of the removed exisiting images
+                                                            function removeExistingImage(imageId) {
+                                                                const imageContainer = document.getElementById(`image-${imageId}`);
+                                                                imageContainer.remove();
+                                                            
+                                                                const removedImagesInput = document.getElementById('removedImages');
+                                                                let removedImages = removedImagesInput.value ? removedImagesInput.value.split(',') : [];
+                                                                removedImages.push(imageId);
+                                                                removedImagesInput.value = removedImages.join(',');
+                                                            }
+                                                            </script>
+                                                            
                                                             <div class="form-group row mx-1">
                                                                 <label for="Content" class="form-label">Content</label>
                                                                 <div id="editor" name="content" class="form-control ckeditor-container" required>{{ form.content|default:pine_news.content }}</div>

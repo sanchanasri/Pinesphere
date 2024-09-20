@@ -483,13 +483,59 @@
                                                                 Please choose a category
                                                               </div>
                                                             </div>
+
                                                             <div class="form-group row mx-1">
                                                                 <label for="file" class="form-label">Upload Image</label>
-                                                                <input type="file" multiple name="images" class="form-control" required>
+                                                                <input type="file" multiple name="images" class="form-control" id="imageUpload" required>
                                                                 <div class="invalid-feedback">
-                                                                  Upload atleast 1 image
+                                                                    Upload at least 1 image
                                                                 </div>
-                                                              </div>
+                                                            </div>
+                                                            
+                                                            <div id="imagePreview" class="row mt-3"></div>
+                                                            
+                                                            <script>
+                                                            document.getElementById('imageUpload').addEventListener('change', function(event) {
+                                                                const previewContainer = document.getElementById('imagePreview');
+                                                                previewContainer.innerHTML = ''; 
+                                                                const files = Array.from(event.target.files); /
+                                                                
+                                                                files.forEach((file, index) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = function(e) {
+                                                                        const imageContainer = document.createElement('div');
+                                                                        imageContainer.classList.add('col-sm-3', 'mb-3', 'position-relative');
+                                                            
+                                                                        const img = document.createElement('img');
+                                                                        img.src = e.target.result;
+                                                                        img.classList.add('img-thumbnail');
+                                                                        img.style.width = '100%';
+                                                            
+                                                                        const cancelButton = document.createElement('button');
+                                                                        cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0', 'end-0');
+                                                                        cancelButton.textContent = 'Cancel';
+                                                            
+                                                                        cancelButton.onclick = function() {
+                                                                            imageContainer.remove();
+                                                                            files.splice(index, 1);
+                                                                            const newFileList = new DataTransfer(); // to change the file name in image upload field.
+                                                                            files.forEach(file => {
+                                                                                newFileList.items.add(file);
+                                                                            });
+                                                                            document.getElementById('imageUpload').files = newFileList.files;
+                                                                        };
+                                                            
+                                                                        imageContainer.appendChild(img);
+                                                                        imageContainer.appendChild(cancelButton);
+                                                                        previewContainer.appendChild(imageContainer);
+                                                                    };
+                                                                    reader.readAsDataURL(file); // Convert the file to a base64 string to immediately display it in the image preview container
+                                                                });
+                                                            });
+                                                            </script>
+                                                            
+                                                            
+                                                              
                                                             <div class="form-group row mx-1">
                                                               <label for="Content" class="form-label">Content</label>
                                                               <div id="editor" name="content" class="form-control ckeditor-container" required>{{ form.content|default:'' }}</div>
