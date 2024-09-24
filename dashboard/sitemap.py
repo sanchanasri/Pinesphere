@@ -7,20 +7,25 @@ class PineNewsSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return PineNews.objects.all()
+        return list(PineNews.objects.all())
     
     def location(self, obj):
         return obj.get_absolute_url()
-    
+
     def lastmod(self, obj):
-        return obj.updated_at
-    
-# class AuthSitemap(Sitemap):
-#     changefreq = "monthly"
-#     priority = 0.5
+        if isinstance(obj, PineNews):
+            return obj.updated_at
+        return None  
 
-#     def items(self):
-#         return ['login', 'logout']
+class AuthSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.5
 
-#     def lastmod(self, obj):
-#         return None 
+    def items(self):
+        return ['login', 'logout', 'pine_news']
+
+    def location(self, obj):
+        return reverse(obj)
+
+    def lastmod(self, obj):
+        return None
